@@ -14,7 +14,7 @@ public abstract class Vehicle {
         this.x = x;
         this.y = y;
         try {
-            vehicleImage = new ImageIcon("C:\\Users\\k243032\\Desktop\\untitled\\src\\car.jpg").getImage();
+            vehicleImage = new ImageIcon("").getImage();
         } catch (Exception e) {
             System.out.println("Could not load car image.");}
     }
