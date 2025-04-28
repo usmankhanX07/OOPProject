@@ -11,6 +11,7 @@ public class Main {
         frame.add(panel);
         frame.setVisible(true);
 
-        panel.startGame();  // Start the game loop
+        panel.startGame();  // Start the game loozzp
     }
+
 }
