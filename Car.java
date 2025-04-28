@@ -1,21 +1,18 @@
 import java.awt.*;
 import javax.swing.*;
 
-public class Car {
-    private int x, y;
-    private final int WIDTH = 100;
-    private final int HEIGHT = 100;
+public class Car extends Vehicle{
+
 
     private Image carImage;
     private boolean useImage = false;  // Toggle this to true to use image instead of shapes
 
-    public Car(int startX, int startY) {
-        this.x = startX;
-        this.y = startY;
+     Car(int startX, int startY) {
+         super(100,100, startX, startY);
 
         // Load image (make sure car.png is in your project directory)
         try {
-            carImage = new ImageIcon("C:\\Users\\k243032\\Desktop\\untitled\\src\\car.jpg").getImage();
+            carImage = new ImageIcon("C:\\Users\\TEMP.KHIFAST.002\\Desktop\\OOP\\src\\car.jpg").getImage();
             useImage = true;  // Set to true if image loads successfully
         } catch (Exception e) {
             System.out.println("Could not load car image. Using shape instead.");
@@ -59,10 +56,14 @@ public class Car {
 //            g2.setColor(Color.CYAN);
 //            g2.fillRect(x + 10, y, WIDTH - 20, 30);
 
-            // Wheels
-            g2.setColor(Color.BLACK);
-            g2.fillOval(x, y + HEIGHT - 10, 15, 15);  // rear wheel
-            g2.fillOval(x + WIDTH - 15, y + HEIGHT - 10, 15, 15);  // front wheel
+//            // Wheels
+//            g2.setColor(Color.BLACK);
+//            g2.fillOval(x, y + HEIGHT - 10, 15, 15);  // rear wheel
+//            g2.fillOval(x + WIDTH - 15, y + HEIGHT - 10, 15, 15);  // front wheel
         }
+    }
+
+    public Rectangle getBounds() {
+        return new Rectangle(x, y, WIDTH, HEIGHT);
     }
 }
