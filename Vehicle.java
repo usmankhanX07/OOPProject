@@ -5,7 +5,7 @@ public abstract class Vehicle {
     protected int x, y;
     protected final int WIDTH;
     protected final int HEIGHT;
-    protected Image carImage;
+    protected Image vehicleImage;
 
 
     Vehicle(int width, int height, int x, int y){
@@ -14,9 +14,9 @@ public abstract class Vehicle {
         this.x = x;
         this.y = y;
         try {
-            carImage = new ImageIcon("C:\\Users\\k243032\\Desktop\\untitled\\src\\car.jpg").getImage();
+            vehicleImage = new ImageIcon("C:\\Users\\k243032\\Desktop\\untitled\\src\\car.jpg").getImage();
         } catch (Exception e) {
-            System.out.println("Could not load car image. Using shape instead.");}
+            System.out.println("Could not load car image.");}
     }
 
 
