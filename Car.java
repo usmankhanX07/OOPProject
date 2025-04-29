@@ -3,16 +3,15 @@ import javax.swing.*;
 
 public class Car extends Vehicle{
 
-
     private Image carImage;
     private boolean useImage = false;  // Toggle this to true to use image instead of shapes
 
      Car(int startX, int startY) {
-         super(100,100, startX, startY);
+         super(60,100, startX, startY);
 
         // Load image (make sure car.png is in your project directory)
         try {
-            carImage = new ImageIcon("C:\\Users\\TEMP.KHIFAST.002\\Desktop\\OOP\\src\\car.jpg").getImage();
+            carImage = new ImageIcon("C:\\Users\\k243032\\Desktop\\OOPProject\\car.jpg").getImage();
             useImage = true;  // Set to true if image loads successfully
         } catch (Exception e) {
             System.out.println("Could not load car image. Using shape instead.");
@@ -20,26 +19,26 @@ public class Car extends Vehicle{
     }
 
     public void moveLeft() {
-        if (x > 0) {
-            x -= 10;
+        if (x > 200) {
+            x -= 20;
         }
     }
 
     public void moveRight() {
-        if (x < 750 - WIDTH) {
-            x += 10;
+        if (x < 750 - WIDTH-200) {
+            x += 20;
         }
     }
 
     public void moveUp() {
         if (y > 0) {
-            y-=20;
+            y-=40;
         }
     }
 
     public void moveDown() {
         if (y < 450) {
-            y+=20;
+            y+=40;
         }
     }
     public void draw(Graphics g) {
@@ -47,19 +46,6 @@ public class Car extends Vehicle{
             g.drawImage(carImage, x, y, WIDTH, HEIGHT, null);
         } else {
             Graphics2D g2 = (Graphics2D) g;
-//
-//            // Car body
-//            g2.setColor(Color.BLUE);
-//            g2.fillRect(x, y + 20, WIDTH, HEIGHT - 20);
-//
-//            // Car cabin
-//            g2.setColor(Color.CYAN);
-//            g2.fillRect(x + 10, y, WIDTH - 20, 30);
-
-//            // Wheels
-//            g2.setColor(Color.BLACK);
-//            g2.fillOval(x, y + HEIGHT - 10, 15, 15);  // rear wheel
-//            g2.fillOval(x + WIDTH - 15, y + HEIGHT - 10, 15, 15);  // front wheel
         }
     }
 
