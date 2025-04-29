@@ -10,7 +10,7 @@ public class Helicopter extends Vehicle {
 
         // Load image (make sure helicopter image is correct path)
         try {
-            helicopterImage = new ImageIcon("C:\\Users\\TEMP.KHIFAST.002\\Desktop\\OOP\\src\\car.jpg").getImage();
+            helicopterImage = new ImageIcon("C:\\Users\\k243032\\Desktop\\OOPProject\\heli.jpg").getImage();
             useImage = true;  // Set to true if image loads successfully
         } catch (Exception e) {
             System.out.println("Could not load helicopter image. Using shape instead.");
