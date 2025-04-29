@@ -3,24 +3,22 @@ import java.awt.*;
 
 public class Helicopter extends Vehicle {
     private Image helicopterImage;
-    private boolean useImage = false;  // Toggle this to true to use image instead of shapes
+    private boolean useImage = false;
 
     Helicopter(int startX, int startY) {
-        super(200, 100, startX, startY);  // Size: width 200, height 100
+        super(200, 100, startX, startY);
 
-        // Load image (make sure helicopter image is correct path)
         try {
             helicopterImage = new ImageIcon("C:\\Users\\k243032\\Desktop\\OOPProject\\heli.jpg").getImage();
-            useImage = true;  // Set to true if image loads successfully
+            useImage = true;
         } catch (Exception e) {
             System.out.println("Could not load helicopter image. Using shape instead.");
         }
     }
 
-    // Move diagonally up-right
     public void flyDiagonally() {
-        x += 5;  // Move right
-        y -= 3;  // Move up
+        x += 5;
+        y -= 3;
     }
 
     @Override
@@ -38,7 +36,7 @@ public class Helicopter extends Vehicle {
 
     public void moveUp() {
         if (y > 0) {
-            y-=20;
+            y -= 20;
         }
     }
 
@@ -53,10 +51,9 @@ public class Helicopter extends Vehicle {
             g.drawImage(helicopterImage, x, y, WIDTH, HEIGHT, null);
         } else {
             g.setColor(Color.BLACK);
-            g.fillRect(x, y, WIDTH, HEIGHT);  // Draw a black rectangle if no image
+            g.fillRect(x, y, WIDTH, HEIGHT);
         }
     }
-
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, WIDTH, HEIGHT);
