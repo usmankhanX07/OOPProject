@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public abstract class Vehicle {
-    protected int x, y;
+    protected int x, y;     //coordinates
     protected final int WIDTH;
     protected final int HEIGHT;
     protected Image vehicleImage;
@@ -13,12 +13,7 @@ public abstract class Vehicle {
         this.HEIGHT = height;
         this.x = x;
         this.y = y;
-        try {
-            vehicleImage = new ImageIcon("").getImage();
-        } catch (Exception e) {
-            System.out.println("Could not load car image.");}
     }
-
 
     public abstract void moveLeft();
     public abstract void moveRight();
