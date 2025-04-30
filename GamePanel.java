@@ -1,4 +1,5 @@
 package OOPProject;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -11,15 +12,19 @@ public class GamePanel extends JPanel {
     private Car car;
     private Truck truck;
     private Helicopter helicopter;
-
-
     private ArrayList<Coin> coins = new ArrayList<>();
     private int coinCounter = 0;
 
-    public GamePanel() {        // constructor
-        this.car = new Car(375, 460);       // integrated composition
-    this.truck = new Truck(200+rand.nextInt(150), -200);
-        this.helicopter = new Helicopter(-200, 600- rand.nextInt(400));
+    private final int LANE_WIDTH = 120;
+    private final int NUM_LANES = 5;
+    private final int PANEL_WIDTH = 750;
+    private Random rand = new Random();
+    private boolean gameRunning = true;
+
+    public GamePanel() {
+        this.car = new Car(375, 460);
+        this.truck = new Truck(200 + rand.nextInt(150), -200);
+        this.helicopter = new Helicopter(-200, 600 - rand.nextInt(400));
 
         spawnCoins();
 
@@ -30,10 +35,10 @@ public class GamePanel extends JPanel {
                 if (!gameRunning) return;
 
                 int key = e.getKeyCode();
-                if (key == KeyEvent.VK_LEFT) {car.moveLeft();}
-                if (key == KeyEvent.VK_RIGHT) {car.moveRight();}
-                if (key == KeyEvent.VK_UP) {car.moveUp();}
-                if (key == KeyEvent.VK_DOWN) {car.moveDown();}
+                if (key == KeyEvent.VK_LEFT) { car.moveLeft(); }
+                if (key == KeyEvent.VK_RIGHT) { car.moveRight(); }
+                if (key == KeyEvent.VK_UP) { car.moveUp(); }
+                if (key == KeyEvent.VK_DOWN) { car.moveDown(); }
             }
         });
     }
@@ -43,7 +48,6 @@ public class GamePanel extends JPanel {
         super.paintComponent(g);
 
         if (car.didCarImageFailToLoad()) {
-            //If the car image is not found then it will display an error message and won't load the other components.
             setBackground(Color.BLACK);
             g.setColor(Color.RED);
             g.setFont(new Font("Consolas", Font.BOLD, 24));
@@ -52,7 +56,7 @@ public class GamePanel extends JPanel {
             return;
         }
 
-        setBackground(Color.black); // Full black background
+        setBackground(Color.black);
 
         if (gameRunning) {
             drawRoad(g);
@@ -65,7 +69,6 @@ public class GamePanel extends JPanel {
                 coin.draw(g);
             }
 
-            // Draw coin counter
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 24));
             g.drawString("Score: " + coinCounter, 10, 30);
@@ -75,20 +78,12 @@ public class GamePanel extends JPanel {
             g.setFont(new Font("Consolas", Font.BOLD, 40));
             g.drawString("Game Over!", 270, 300);
         }
-
     }
 
     private void spawnCoins() {
-        for (int i = 0; i < 5; i++) {
-            int lane;
-            int x;
-
-            // Randomly pick a lane between 1 and 3 (middle lanes)
-            lane = rand.nextInt(3) + 1;  // Generates 1, 2, or 3 (middle lanes)
-            x = (PANEL_WIDTH - (LANE_WIDTH * NUM_LANES)) / 2 + lane * LANE_WIDTH;
-
-//            Rectangle potentialCoin = new Rectangle(x + 50, -50, 20, 20);
-
+        while (coins.size() < 5) {
+            int lane = rand.nextInt(3) + 1;
+            int x = (PANEL_WIDTH - (LANE_WIDTH * NUM_LANES)) / 2 + lane * LANE_WIDTH;
             coins.add(new Coin(x));
         }
     }
@@ -99,45 +94,42 @@ public class GamePanel extends JPanel {
 
         for (int i = 0; i < NUM_LANES; i++) {
             int x = startX + i * LANE_WIDTH;
-
-            // For the outer lanes (0 and NUM_LANES-1), use a solid color
-            if (i == 0 || i == NUM_LANES - 1) {
-                g2d.setColor(Color.GRAY); // Outer lanes will be solid yellow
-                g2d.fillRect(x, 0, LANE_WIDTH, getHeight()); // Fill the outer lane with color
-            } else {
-                g2d.setColor(Color.BLACK); // Inner lanes will be solid black
-                g2d.fillRect(x, 0, LANE_WIDTH, getHeight()); // Fill the inner lane with color
-            }
+            g2d.setColor((i == 0 || i == NUM_LANES - 1) ? Color.GRAY : Color.BLACK);
+            g2d.fillRect(x, 0, LANE_WIDTH, getHeight());
         }
 
-        // Set up dashed lines for all lanes
         float[] dashPattern = {15, 15};
         Stroke dashedWhite = new BasicStroke(5, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10, dashPattern, 0);
         Stroke dashedYellow = new BasicStroke(5, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10, dashPattern, 0);
 
         for (int i = 0; i <= NUM_LANES; i++) {
             int x = startX + i * LANE_WIDTH;
-            if (i == 0 || i == NUM_LANES) {
-                g2d.setColor(Color.GREEN);
-                g2d.setStroke(dashedYellow); // Yellow dashed lines for the outer lanes
-            } else {
-                g2d.setColor(Color.WHITE);
-                g2d.setStroke(dashedWhite); // White dashed lines for the inner lanes
-            }
-            g2d.drawLine(x, 0, x, getHeight()); // Draw dashed lane separator lines
+            g2d.setColor((i == 0 || i == NUM_LANES) ? Color.GREEN : Color.WHITE);
+            g2d.setStroke((i == 0 || i == NUM_LANES) ? dashedYellow : dashedWhite);
+            g2d.drawLine(x, 0, x, getHeight());
         }
 
-        g2d.setStroke(new BasicStroke()); // Reset stroke to default
+        g2d.setStroke(new BasicStroke());
     }
 
-
     public void startGame() {
-        Timer timer = new Timer(1000 / 60, e -> {   //60 fps
+        Timer timer = new Timer(1000 / 60, e -> {
             if (gameRunning) {
                 truck.moveDown();
                 helicopter.flyDiagonally();
+                for (Coin coin : coins) {
+                    coin.moveDown();
+                }
                 checkCollision();
                 checkCoinCollision();
+
+                if (truck.getY() > getHeight()) {
+                    truck = new Truck(200 + rand.nextInt(150), -200);
+                }
+
+                if (helicopter.getX() > getWidth() || helicopter.getY() < -100) {
+                    helicopter = new Helicopter(-200, 600 - rand.nextInt(400));
+                }
             }
             repaint();
         });
@@ -152,11 +144,6 @@ public class GamePanel extends JPanel {
         }
     }
 
-
-
-    private final int LANE_WIDTH = 120;
-    private final int NUM_LANES = 5;
-    private final int PANEL_WIDTH = 750;
     private void checkCoinCollision() {
         Rectangle carBounds = car.getBounds();
         Iterator<Coin> iterator = coins.iterator();
@@ -166,16 +153,13 @@ public class GamePanel extends JPanel {
             if (carBounds.intersects(coin.getBounds())) {
                 iterator.remove();
                 coinCounter++;
+            } else if (coin.getY() > getHeight()) {
+                iterator.remove();
             }
         }
 
-        if (coins.size() < 5) {
-            spawnCoins();
-        }
+        spawnCoins();
     }
-
-    private Random rand = new Random();
-    private boolean gameRunning = true;
 }
 
 //import javax.swing.*;
