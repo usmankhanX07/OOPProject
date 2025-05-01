@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class GamePanel extends JPanel {
     private Car car;
-    private Truck truck;
+    private Vehicle truck;      // adding runtime polymorphism
     private Helicopter helicopter;
     private ArrayList<Coin> coins = new ArrayList<>();
     private int coinCounter = 0;
@@ -23,7 +23,7 @@ public class GamePanel extends JPanel {
 
     public GamePanel() {
         this.car = new Car(375, 460);
-        this.truck = new Truck(200 + rand.nextInt(150), -200);
+        this.truck = new Truck(200 + rand.nextInt(266), -200);
         this.helicopter = new Helicopter(-200, 600 - rand.nextInt(400));
 
         spawnCoins();
@@ -65,26 +65,18 @@ public class GamePanel extends JPanel {
             helicopter.draw(g);
 
             for (Coin coin : coins) {
-                coin.moveDown();
+//                coin.moveDown();
                 coin.draw(g);
             }
 
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 24));
-            g.drawString("Score: " + coinCounter, 10, 30);
+            g.drawString("Coins: " + coinCounter, 10, 30);
 
         } else {
             g.setColor(Color.RED);
             g.setFont(new Font("Consolas", Font.BOLD, 40));
             g.drawString("Game Over!", 270, 300);
-        }
-    }
-
-    private void spawnCoins() {
-        while (coins.size() < 5) {
-            int lane = rand.nextInt(3) + 1;
-            int x = (PANEL_WIDTH - (LANE_WIDTH * NUM_LANES)) / 2 + lane * LANE_WIDTH;
-            coins.add(new Coin(x));
         }
     }
 
@@ -113,10 +105,10 @@ public class GamePanel extends JPanel {
     }
 
     public void startGame() {
-        Timer timer = new Timer(1000 / 60, e -> {
+        Timer timer = new Timer(1000 / 100, e -> {
             if (gameRunning) {
                 truck.moveDown();
-                helicopter.flyDiagonally();
+                helicopter.flyDiagonallyEastward();
                 for (Coin coin : coins) {
                     coin.moveDown();
                 }
@@ -124,12 +116,16 @@ public class GamePanel extends JPanel {
                 checkCoinCollision();
 
                 if (truck.getY() > getHeight()) {
-                    truck = new Truck(200 + rand.nextInt(150), -200);
+                    truck = new Truck(200 + rand.nextInt(266), -200);
                 }
 
                 if (helicopter.getX() > getWidth() || helicopter.getY() < -100) {
                     helicopter = new Helicopter(-200, 600 - rand.nextInt(400));
                 }
+//                    else{
+//                        helicopter = new Helicopter(1000, 600 - rand.nextInt(400));
+//                    }
+
             }
             repaint();
         });
@@ -144,7 +140,17 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void checkCoinCollision() {
+    private void spawnCoins() {
+        while (coins.size() < 5) {
+            int lane = rand.nextInt(3) + 1;
+            int x = (PANEL_WIDTH - (LANE_WIDTH * NUM_LANES)) / 2 + lane * LANE_WIDTH;
+            coins.add(new Coin(x));
+        }
+    }
+
+
+
+    private void checkCoinCollision () {
         Rectangle carBounds = car.getBounds();
         Iterator<Coin> iterator = coins.iterator();
 
@@ -160,6 +166,7 @@ public class GamePanel extends JPanel {
 
         spawnCoins();
     }
+
 }
 
 //import javax.swing.*;
