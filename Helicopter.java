@@ -1,43 +1,50 @@
+package OOPProject;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class Helicopter extends Vehicle {
-    private Image helicopterImage;
-    private boolean useImage = false;
+public class Helicopter extends Vehicle implements HeliBlueprint{
 
     Helicopter(int startX, int startY) {
-        super(200, 100, startX, startY);
+        super(150, 200, startX, startY);
 
         try {
-            helicopterImage = new ImageIcon("C:\\Users\\k243032\\Desktop\\OOPProject\\heli.jpg").getImage();
-            useImage = true;
+            vehicleImage = new ImageIcon("C:\\Users\\irfan\\Desktop\\FAST\\OOPLab\\src\\OOPProject\\Pictures\\heli-edited.png").getImage();
+            isVehicleImageLoaded = true;
         } catch (Exception e) {
             System.out.println("Could not load helicopter image. Using shape instead.");
         }
     }
 
-    public void flyDiagonally() {
-        x += 5;
-        y -= 3;
+    public void flyDiagonally(boolean atRightCorner){
+        if(x<0 || atRightCorner){
+            flyDiagonallyEastward();
+        }
+        else{
+            flyDiagonallyWestward();
+        }
     }
 
+    public void flyDiagonallyEastward() {
+        moveRight();
+        moveUp();
+    }
+
+    public void flyDiagonallyWestward() {
+        moveLeft();
+        moveUp();
+    }
     @Override
     public void moveLeft() {
-        if (x > 0) {
             x -= 10;
-        }
     }
 
     public void moveRight() {
-        if (x < 750 - WIDTH) {
             x += 10;
-        }
     }
 
     public void moveUp() {
-        if (y > 0) {
-            y -= 20;
-        }
+        y -= 7;
     }
 
     public void moveDown() {
@@ -46,16 +53,4 @@ public class Helicopter extends Vehicle {
         }
     }
 
-    public void draw(Graphics g) {
-        if (useImage && helicopterImage != null) {
-            g.drawImage(helicopterImage, x, y, WIDTH, HEIGHT, null);
-        } else {
-            g.setColor(Color.BLACK);
-            g.fillRect(x, y, WIDTH, HEIGHT);
-        }
-    }
-
-    public Rectangle getBounds() {
-        return new Rectangle(x, y, WIDTH, HEIGHT);
-    }
 }
