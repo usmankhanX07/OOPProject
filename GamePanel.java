@@ -13,7 +13,8 @@ public class GamePanel extends JPanel {
     private Vehicle truck;      // adding runtime polymorphism
     private Helicopter helicopter;
     private ArrayList<Coin> coins = new ArrayList<>();
-    private int coinCounter = 0;
+    private int scoreCount = 0;
+    private int timeCounter;
 
     private final int LANE_WIDTH = 120;
     private final int NUM_LANES = 5;
@@ -29,8 +30,9 @@ public class GamePanel extends JPanel {
     public GamePanel(String difficulty){
         this.difficulty = difficulty;
         incorporateDifficulty();
+//        timeCounter = 0;
 
-        this.car = new Car(375, 460, carManeuverability);
+        this.car = new Car(360, 640, carManeuverability);   //460
         this.truck = new Truck(200 + rand.nextInt(250), -200, truckSpeed);
         this.helicopter = new Helicopter(-200, 600 - rand.nextInt(400));
 
@@ -95,6 +97,7 @@ public class GamePanel extends JPanel {
 //                        helicopter = new Helicopter(1000, 600 - rand.nextInt(400));
 //                    }
 
+                timeCounter++;
             }
             repaint();
         });
@@ -129,12 +132,14 @@ public class GamePanel extends JPanel {
 
             g.setColor(Color.WHITE);
             g.setFont(new Font("Arial", Font.BOLD, 24));
-            g.drawString("Coins: " + coinCounter, 10, 30);
+            g.drawString("Score: " + scoreCount, 10, 30);
+            g.drawString("Timer: "+ timeCounter, 10, 60);
 
         } else {
             g.setColor(Color.RED);
             g.setFont(new Font("Consolas", Font.BOLD, 40));
             g.drawString("Game Over!", 270, 300);
+            g.drawString("You survived for "+timeCounter+" seconds", 100,350);
         }
     }
 
@@ -188,7 +193,7 @@ public class GamePanel extends JPanel {
             Coin coin = iterator.next();
             if (carBounds.intersects(coin.getBounds())) {
                 iterator.remove();
-                coinCounter++;
+                scoreCount++;
             } else if (coin.getY() > getHeight()) {
                 iterator.remove();
             }
