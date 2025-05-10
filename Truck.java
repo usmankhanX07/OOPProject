@@ -1,15 +1,13 @@
 package OOPProject;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
 
 public class Truck extends Vehicle {
+    private final int downWardSpeed;
 
-    Truck(int startX, int startY) {
+    Truck(int startX, int startY, int truckSpeed) {
         super(100, 200, startX, startY);
+        this.downWardSpeed = truckSpeed;
 
         try {
             vehicleImage = new ImageIcon("C:\\Users\\irfan\\Desktop\\FAST\\OOPLab\\src\\OOPProject\\Pictures\\truck1.jpg").getImage();
@@ -36,8 +34,8 @@ public class Truck extends Vehicle {
 
     @Override
     public void moveDown() {
-        y += 5;
-    }
+        y += downWardSpeed;
+    } //5
 
 
 }
