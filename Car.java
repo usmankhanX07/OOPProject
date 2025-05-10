@@ -3,8 +3,17 @@ import javax.swing.*;
 
 public class Car extends Vehicle{
 
-     Car(int startX, int startY) {
+    private int primaryCarSpeed;
+
+     Car(int startX, int startY, String carManeuverability) {
          super(50,100, startX, startY);
+         switch(carManeuverability){
+             case "light":primaryCarSpeed = 40; break;
+             case "intermediate":primaryCarSpeed = 30; break;
+             case "expert":primaryCarSpeed = 25; break;
+             default:primaryCarSpeed = 35;
+         }
+
          vehicleImage = new ImageIcon("C:\\Users\\irfan\\Desktop\\FAST\\OOPLab\\src\\OOPProject\\Pictures\\sportscar.png").getImage();
          if (vehicleImage == null || vehicleImage.getWidth(null) == -1) {
              isVehicleImageLoaded = false;
@@ -13,15 +22,17 @@ public class Car extends Vehicle{
          }
     }
 
+
+
     public void moveLeft() {
         if (x > 200) {
-            x -= 30;
+            x -= primaryCarSpeed;
         }
     }
 
     public void moveRight() {
         if (x < 493) {
-            x += 30;
+            x += primaryCarSpeed;
         }
     }
 
