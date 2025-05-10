@@ -1,3 +1,5 @@
+package OOPProject;
+
 import java.awt.*;
 
 public class Coin {
@@ -37,5 +39,8 @@ public class Coin {
 
     public Rectangle getBounds() {
         return new Rectangle(x, y, SIZE, SIZE);
+    }
+    public int getY(){
+        return y;
     }
 }
