@@ -25,21 +25,10 @@ public class Coin {
         }
     }
 
-    public boolean checkCollision(Rectangle playerBounds) {
-        if (!collected && playerBounds.intersects(getBounds())) {
-            collected = true;
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isOffScreen(int panelHeight) {
-        return y > panelHeight;
-    }
-
     public Rectangle getBounds() {
         return new Rectangle(x, y, SIZE, SIZE);
     }
+
     public int getY(){
         return y;
     }
