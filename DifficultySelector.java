@@ -12,18 +12,23 @@ public class DifficultySelector {
     private static String selectedDifficulty;
 
     public static String processDifficulty() {
-        // Load the background image
-        try {
-            Image backgroundImage = javax.imageio.ImageIO.read(new File("C:\\Users\\irfan\\Desktop\\FAST\\OOPLab\\src\\OOPProject\\Pictures\\policeTape.jpeg"));  // Adjust path as needed
-        } catch (IOException e) {
-            System.out.println("Background image failed to load.");
-            e.printStackTrace();
-        }
-
         JFrame frame = new JFrame("Select Difficulty");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 500);  // Increased size
-        frame.setLayout(null);
+        frame.setSize(500, 500);
+        JPanel backgroundPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                try {
+                    Image bg = javax.imageio.ImageIO.read(new File("C:\\Users\\irfan\\Desktop\\FAST\\OOPLab\\src\\OOPProject\\Pictures\\policeTape.jpeg"));
+                    g.drawImage(bg, 0, 0, getWidth(), getHeight(), this);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+        backgroundPanel.setLayout(null);
+        frame.setContentPane(backgroundPanel);
         frame.setResizable(false);
 
         frame.getContentPane().setBackground(Color.BLACK);
@@ -31,7 +36,6 @@ public class DifficultySelector {
         ArrayList<JLabel> labels = getJLabels();
         for(JLabel l: labels){
             l.setForeground(Color.RED);
-            l.setBounds(50, 70, 400, 50);
             frame.add(l);
         }
 
@@ -80,12 +84,14 @@ public class DifficultySelector {
         return selectedDifficulty;
     }
 
-    private static ArrayList<JLabel> getJLabels() {
+    private static ArrayList<JLabel> getJLabels() { //shows and sets the labels for the difficulty window
         JLabel titleLabel = new JLabel("High Speed Chase 2", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Consolas", Font.BOLD, 30));
+        titleLabel.setBounds(50, 30, 400, 50);
 
         JLabel difficultyLabel = new JLabel("Choose your difficulty", SwingConstants.CENTER);
         difficultyLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+        difficultyLabel.setBounds(50, 70, 400, 50);
 
         return new ArrayList<>(Arrays.asList(titleLabel, difficultyLabel));
     }
