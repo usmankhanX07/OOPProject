@@ -1,7 +1,7 @@
 package OOPProject;
 
 public interface HeliBlueprint {
-    public void flyDiagonally(boolean atRightCorner);
-    public void flyDiagonallyEastward();
-    public void flyDiagonallyWestward();
+    void flyDiagonallyEastward();
+    void flyDiagonallyWestward();
+    void buildHelicopter(boolean flipped) throws HelicopterBuildFailed;
 }
