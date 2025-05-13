@@ -1,27 +1,15 @@
 package OOPProject;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class Helicopter extends Vehicle implements HeliBlueprint{
 
-    Helicopter(int startX, int startY) {
-        super(150, 200, startX, startY);
-
-        try {
-            vehicleImage = new ImageIcon("C:\\Users\\irfan\\Desktop\\FAST\\OOPLab\\src\\OOPProject\\Pictures\\heli-edited.png").getImage();
-            isVehicleImageLoaded = true;
-        } catch (Exception e) {
-            System.out.println("Could not load helicopter image. Using shape instead.");
-        }
-    }
-
-    public void flyDiagonally(boolean atRightCorner){
-        if(x<0 || atRightCorner){
-            flyDiagonallyEastward();
-        }
-        else{
-            flyDiagonallyWestward();
+    Helicopter(int startX, int startY, boolean flipped) {
+        super(220, 250, startX, startY);
+        try{
+            buildHelicopter(flipped);
+        } catch (HelicopterBuildFailed e) {
+            System.out.println(e.getMessage());
         }
     }
 
@@ -33,6 +21,7 @@ public class Helicopter extends Vehicle implements HeliBlueprint{
     public void flyDiagonallyWestward() {
         moveLeft();
         moveUp();
+
     }
     @Override
     public void moveLeft() {
@@ -40,17 +29,30 @@ public class Helicopter extends Vehicle implements HeliBlueprint{
     }
 
     public void moveRight() {
-            x += 10;
-    }
+            x += 7;
+    } //10
 
     public void moveUp() {
-        y -= 7;
-    }
+        y -= 5;
+    } //5
 
-    public void moveDown() {
-        if (y < 450) {
-            y += 10;
+    public void moveDown() {}
+
+    public void buildHelicopter(boolean flipped) throws HelicopterBuildFailed{
+        if(!flipped){
+            try {
+                vehicleImage = new ImageIcon(
+                        "C:\\Users\\irfan\\Desktop\\FAST\\OOPLab\\src\\OOPProject\\Pictures\\heli-tilted.png").getImage();
+                isVehicleImageLoaded = true;
+            }finally{}
+        }
+        else{
+            try {
+                vehicleImage = new ImageIcon(
+                        "C:\\Users\\irfan\\Desktop\\FAST\\OOPLab\\src\\OOPProject\\Pictures\\heli-camo-flipped.png").getImage();
+                isVehicleImageLoaded = true;
+            }finally{}
         }
     }
-
 }
+
