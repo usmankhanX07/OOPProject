@@ -1,5 +1,4 @@
 package OOPProject;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -11,7 +10,10 @@ import java.util.Random;
 public class GamePanel extends JPanel {
     private Car car;
     private Vehicle truck;      // adding runtime polymorphism
+    private Vehicle truck1;
     private Helicopter helicopter;
+    private Helicopter helicopterInversed;
+
     private ArrayList<Coin> coins = new ArrayList<>();
     private int scoreCount = 0;
     private int timeCounter;
@@ -30,11 +32,16 @@ public class GamePanel extends JPanel {
     public GamePanel(String difficulty){
         this.difficulty = difficulty;
         incorporateDifficulty();
-//        timeCounter = 0;
 
         this.car = new Car(360, 640, carManeuverability);   //460
         this.truck = new Truck(200 + rand.nextInt(250), -200, truckSpeed);
-        this.helicopter = new Helicopter(-200, 600 - rand.nextInt(400));
+        this.truck1 = null;
+        if(difficulty.equals("hard")) {
+            this.truck1 = new Truck(400 + rand.nextInt(50), -200, truckSpeed);
+            this.truck = new Truck(200 + rand.nextInt(120), -200, truckSpeed);
+        }
+        this.helicopter = new Helicopter(-200, 800 - rand.nextInt(600), false);
+        this.helicopterInversed = new Helicopter(1000, 800-rand.nextInt(600), true);
 
         spawnCoins();
 
@@ -79,7 +86,9 @@ public class GamePanel extends JPanel {
         Timer timer = new Timer(1000 / frameRate, e -> {
             if (gameRunning) {
                 truck.moveDown();
+                if(difficulty.equals("hard")){truck1.moveDown();}
                 helicopter.flyDiagonallyEastward();
+                helicopterInversed.flyDiagonallyWestward();
                 for (Coin coin : coins) {
                     coin.moveDown();
                 }
@@ -88,15 +97,21 @@ public class GamePanel extends JPanel {
 
                 if (truck.getY() > getHeight()) {
                     truck = new Truck(200 + rand.nextInt(260), -200, truckSpeed);
+                    if(difficulty.equals("hard")) {
+                        truck = new Truck(200 + rand.nextInt(120), -200, truckSpeed);
+                    }
+                }
+                if (difficulty.equals("hard") && truck1.getY() > getHeight()) {
+                    truck1 = new Truck(400 + rand.nextInt(60), -200, truckSpeed);
                 }
 
-                if (helicopter.getX() > getWidth() || helicopter.getY() < -100) {
-                    helicopter = new Helicopter(-200, 600 - rand.nextInt(400));
-                }
-//                    else{
-//                        helicopter = new Helicopter(1000, 600 - rand.nextInt(400));
-//                    }
 
+                if (helicopter.getX() > getWidth()|| helicopter.getY() < -100) {
+                    helicopter = new Helicopter(-200, 900 - rand.nextInt(600), false);
+                }
+                if (helicopterInversed.getX()<-100) {
+                    helicopterInversed = new Helicopter(1000, 700 - rand.nextInt(600), true);
+                }
                 timeCounter++;
             }
             repaint();
@@ -123,7 +138,9 @@ public class GamePanel extends JPanel {
             drawRoad(g);
             car.draw(g);
             truck.draw(g);
+            if(difficulty.equals("hard")){truck1.draw(g);};
             helicopter.draw(g);
+            helicopterInversed.draw(g);
 
             for (Coin coin : coins) {
                 if(difficulty.equals("hard")){coin.moveDown();}
@@ -139,7 +156,8 @@ public class GamePanel extends JPanel {
             g.setColor(Color.RED);
             g.setFont(new Font("Consolas", Font.BOLD, 40));
             g.drawString("Game Over!", 270, 300);
-            g.drawString("You survived for "+timeCounter+" seconds", 100,350);
+            g.drawString("You survived for "+ timeCounter +" ms", 145,350);
+            g.drawString("Final score: "+scoreCount, 240,400);
         }
     }
 
@@ -170,8 +188,14 @@ public class GamePanel extends JPanel {
     private void checkCollision() {
         Rectangle carBounds = car.getBounds();
         Rectangle truckBounds = truck.getBounds();
-        if (carBounds.intersects(truckBounds)) {
+
+        if (carBounds.intersects(truckBounds)){
             gameRunning = false;
+        }
+        if(difficulty.equals("hard")){
+            if(carBounds.intersects(truck1.getBounds())){
+                gameRunning = false;
+            }
         }
     }
 
@@ -182,8 +206,6 @@ public class GamePanel extends JPanel {
             coins.add(new Coin(x));
         }
     }
-
-
 
     private void checkCoinCollision () {
         Rectangle carBounds = car.getBounds();
@@ -201,5 +223,4 @@ public class GamePanel extends JPanel {
 
         spawnCoins();
     }
-
 }
