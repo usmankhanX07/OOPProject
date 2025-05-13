@@ -36,6 +36,4 @@ public class Truck extends Vehicle {
     public void moveDown() {
         y += downWardSpeed;
     } //5
-
-
 }
