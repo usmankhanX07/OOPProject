@@ -42,9 +42,3 @@ public abstract class Vehicle {
         return new Rectangle(x, y, WIDTH, HEIGHT);
     }
 }
-
-//    class MovingOutOfBound extends RuntimeException{
-//        MovingOutOfBound(String direction){
-//            super("The car can not move more to the "+direction);
-//        }
-//    }
