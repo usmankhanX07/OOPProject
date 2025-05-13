@@ -22,16 +22,14 @@ public class Car extends Vehicle{
          }
     }
 
-
-
     public void moveLeft() {
-        if (x > 200) {
+        if (x > 215) { //220
             x -= primaryCarSpeed;
         }
     }
 
     public void moveRight() {
-        if (x < 493) {
+        if (x < 480) {  //490
             x += primaryCarSpeed;
         }
     }
@@ -43,7 +41,7 @@ public class Car extends Vehicle{
     }
 
     public void moveDown() {
-        if (y < 450) {
+        if (y < 670) {
             y+=30;
         }
     }
